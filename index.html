@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlendBazaar - Where Style Meets Innovation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+.header {
+    background: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(14, 1, 254, 0.185);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1100ff;
+    text-decoration: none;
+}
+
+.search-bar {
+    flex: 0 1 600px;
+    position: relative;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.search-bar button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.header-actions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.account-link, .cart-link {
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.cart-count {
+    background: #2563eb;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+/* Hero section container */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    display: flex; /* Using flexbox to position content */
+    align-items: center; /* Vertically center content */
+    justify-content: flex-start; /* Align content to the left */
+    overflow: hidden; /* Prevents overflow */
+}
+
+/* Video background */
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Ensure the video fits without zooming or cropping */
+.hero-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the video covers the area without distorting */
+    object-position: center center; /* Centers the video */
+}
+
+/* Content (text and buttons) */
+.hero-content {
+    position: absolute; /* Absolute positioning to place it at the bottom */
+    bottom: 20px; /* Distance from the bottom of the video */
+    left: 20px; /* Distance from the left of the video */
+    transform: none; /* Remove horizontal centering */
+    color: rgb(0, 0, 0); /* White text for visibility */
+    text-align: left; /* Align text to the left */
+    z-index: 1; /* Keeps content above the video */
+    padding: 40px; /* Add top and side padding */
+    max-width: 80%; /* Set the content width to 80% for responsive design */
+    /* background: rgba(0, 0, 0, 0.5); Semi-transparent dark background for contrast */
+    border-radius: 10px; /* Rounded corners for smooth edges */
+    /* box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); Subtle shadow to create depth */
+}
+
+.complaint-link {
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+    background: #ff7f50;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.complaint-link:hover {
+    background: #e06a45;
+}
+
+
+
+/* Title */
+.hero h1 {
+    font-size: 3.5rem; /* Adjust the size as needed */
+    margin-bottom: 20px;
+    font-weight: 700; /* Bold for prominence */
+    text-transform: uppercase; /* Makes text uppercase for emphasis */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6); /* Adds shadow for better visibility */
+}
+
+/* Paragraph */
+.hero p {
+    font-size: 1.2rem; /* Adjust the size as needed */
+    margin-bottom: 30px;
+    font-weight: 300; /* Light font weight for body text */
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for contrast */
+}
+
+/* Buttons */
+.hero-buttons .btn {
+    margin: 0 10px;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 30px; /* Rounded buttons */
+    transition: all 0.3s ease-in-out; /* Smooth transition on hover */
+}
+
+/* Primary button style */
+.hero-buttons .btn-primary {
+    background-color: #ff7f50;
+    color: white;
+    border: none;
+    box-shadow: 0 5px 20px rgba(255, 127, 80, 0.4); /* Light shadow to lift the button */
+}
+
+/* Secondary button style */
+.hero-buttons .btn-secondary {
+    background-color: #333;
+    color: white;
+    border: none;
+    box-shadow: 0 5px 20px rgba(51, 51, 51, 0.3); /* Light shadow for depth */
+}
+
+/* Button hover effects */
+.hero-buttons .btn:hover {
+    transform: translateY(-5px); /* Slight lift effect on hover */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.category-section {
+    margin-bottom: 60px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.view-all {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 20px;
+}
+
+.product-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.product-price {
+    font-weight: 600;
+    color: #111827;
+    font-size: 18px;
+}
+
+.rating {
+    color: #fbbf24;
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .search-bar {
+        order: 3;
+        flex: 1 1 100%;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">BlendBazaar</a>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for products...">
+                <button>🔍</button>
+            </div>
+            <div class="header-actions">
+                <a href="#" class="account-link">
+                    <span>Account</span>
+                </a>
+                <a href="#" class="cart-link">
+                    <span>Cart</span>
+                    <span class="cart-count">0</span>
+                </a>
+                <a href="#" class="complaint-link">
+                    <span>Complaint</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-video">
+            <video autoplay muted loop>
+                <source src="E:\E-commerce website\bg.mp4" type="video/mp4" />
+            </video>
+        </div>
+        <div class="hero-content">
+            <!-- <p>Your one-stop shop for clothing, shoes, and electronics—all blended to perfection. From trendy apparel to cutting-edge gadgets, discover a world of possibilities curated just for you.</p> -->
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-primary">Start Shopping</a>
+                <a href="#" class="btn btn-secondary">View Deals</a>
+            </div>
+        </div>
+    </section>
+    
+    
+
+    <div class="container">
+        <!-- Men's Section -->
+        <section class="category-section">
+            <div class="section-header">
+                <h2 class="section-title">Men's Collection</h2>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="https://i.ibb.co/C20hPFC/T-shirt.png" alt="Men's Casual Shirt" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Classic Cotton Shirt</h3>
+                        <div class="product-price">$49.99</div>
+                        <div class="rating">★★★★☆</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://i.ibb.co/W0ns8Hx/jeans.jpg" alt="Men's Jeans" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Slim Fit Denim</h3>
+                        <div class="product-price">$69.99</div>
+                        <div class="rating">★★★★★</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://i.ibb.co/ThRvPgN/sneaker.jpg" alt="Men's Shoes" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Urban Sneakers</h3>
+                        <div class="product-price">$89.99</div>
+                        <div class="rating">★★★★☆</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://i.ibb.co/KGx9ybc/Watch.png" alt="Men's Watch" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Classic Timepiece</h3>
+                        <div class="product-price">$129.99</div>
+                        <div class="rating">★★★★★</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Women's Section -->
+        <section class="category-section">
+            <div class="section-header">
+                <h2 class="section-title">Women's Collection</h2>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="https://i.ibb.co/fx7LphJ/Dress.png" alt="Women's Dress" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Summer Floral Dress</h3>
+                        <div class="product-price">$79.99</div>
+                        <div class="rating">★★★★★</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://i.ibb.co/kGVDPTB/Blouse.png" alt="Women's Blouse" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Elegant Blouse</h3>
+                        <div class="product-price">$45.99</div>
+                        <div class="rating">★★★★☆</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://i.ibb.co/Dbht1Dq/HandBag.png" alt="Women's Bag" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Designer Handbag</h3>
+                        <div class="product-price">$159.99</div>
+                        <div class="rating">★★★★★</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://i.ibb.co/wKfY0p2/Heels.png" alt="Women's Shoes" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Comfort Heels</h3>
+                        <div class="product-price">$99.99</div>
+                        <div class="rating">★★★★☆</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Children's Section -->
+        <section class="category-section">
+            <div class="section-header">
+                <h2 class="section-title">Children's Collection</h2>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="https://i.ibb.co/zrrDptq/Kidstshirt.png" alt="Kids T-Shirt" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Fun Print T-Shirt</h3>
+                        <div class="product-price">$24.99</div>
+                        <div class="rating">★★★★★</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://source.unsplash.com/random/400x500?kids-shoes" alt="Kids Shoes" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Comfortable Sneakers</h3>
+                        <div class="product-price">$39.99</div>
+                        <div class="rating">★★★★☆</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://source.unsplash.com/random/400x500?kids-jacket" alt="Kids Jacket" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Warm Winter Jacket</h3>
+                        <div class="product-price">$69.99</div>
+                        <div class="rating">★★★★★</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://source.unsplash.com/random/400x500?kids-backpack" alt="Kids Backpack" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">School Backpack</h3>
+                        <div class="product-price">$34.99</div>
+                        <div class="rating">★★★★☆</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Arrivals Section -->
+        <section class="category-section">
+            <div class="section-header">
+                <h2 class="section-title">New Arrivals</h2>
+            </div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="https://source.unsplash.com/random/400x500?hoodie" alt="Unisex Hooded Sweatshirt" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Unisex Hooded Sweatshirt</h3>
+                        <div class="product-price">$39.99</div>
+                        <div class="rating">★★★★☆</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="https://source.unsplash.com/random/400x500?leggings" alt="Women's High-Waisted Leggings" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Women's High-Waisted Leggings</h3>
+                        <div class="product-price">$45.99</div>
+                        <div class="rating">★★★★★</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Perfect Blend Section -->
+        <section class="category-section">
+            <div class="section-header">
+                <h2 class="section-title">Find Your Perfect Blend</h2>
+            </div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-info">
+                        <h3 class="product-title">Clothing</h3>
+                        <p>Style for every occasion</p>
+                        <a href="#" class="btn btn-secondary">Shop Now</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-info">
+                        <h3 class="product-title">Shoes</h3>
+                        <p>Step up your footwear game</p>
+                        <a href="#" class="btn btn-secondary">Shop Now</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-info">
+                        <h3 class="product-title">Electronics</h3>
+                        <p>Tech that keeps you ahead</p>
+                        <a href="#" class="btn btn-secondary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Add hover effects to product cards
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mouseover', () => {
+                card.style.transform = 'translateY(-5px)';
+                card.style.transition = 'transform 0.3s ease';
+            });
+
+            card.addEventListener('mouseout', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Add smooth scroll for anchor links
+       
