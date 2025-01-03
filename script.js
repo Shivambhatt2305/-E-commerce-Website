@@ -3,18 +3,50 @@ const brands = ['Nike', 'Adidas', 'Puma', 'Reebok', 'New Balance', 'Asics', 'Van
 const sizes = ['S', 'M', 'L', 'XL'];
 const types = ['Sneakers', 'Running Shoes', 'Casual Shoes', 'Dress Shoes', 'Sandals', 'Boots'];
 
+// Product image URLs
+const productImages = {
+    'Nike': {
+        'Sneakers': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
+        'Running Shoes': 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a',
+        'Sandals': 'https://images.unsplash.com/photo-1603808033192-082d6919d3e1',
+        'Boots': 'https://images.unsplash.com/photo-1608256246200-53e635b5b65f'
+    },
+    'Adidas': {
+        'Sneakers': 'https://images.unsplash.com/photo-1618666012174-83b441c0bc76',
+        'Running Shoes': 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa',
+        'Sandals': 'https://images.unsplash.com/photo-1628253747716-0c4f5c90fdda',
+        'Boots': 'https://images.unsplash.com/photo-1638247025967-b4e38f787b76'
+    },
+    'Puma': {
+        'Sneakers': 'https://images.unsplash.com/photo-1608231387042-66d1773070a5',
+        'Running Shoes': 'https://images.unsplash.com/photo-1608231387042-66d1773070a5',
+        'Sandals': 'https://images.unsplash.com/photo-1567347167012-29482aa7a9a8',
+        'Boots': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff'
+    }
+};
+
 // Generate 100 products
 for (let i = 1; i <= 100; i++) {
+    const brand = brands[Math.floor(Math.random() * brands.length)];
+    const type = types[Math.floor(Math.random() * types.length)];
+    
+    // Get specific image URL or fallback to a default
+    let imageUrl = 'https://images.unsplash.com/photo-1549298916-b41d501d3772';
+    if (productImages[brand] && productImages[brand][type]) {
+        imageUrl = productImages[brand][type];
+    }
+    
     products.push({
         id: i,
-        title: `${brands[Math.floor(Math.random() * brands.length)]} ${types[Math.floor(Math.random() * types.length)]}`,
+        title: `${brand} ${type}`,
         price: Math.floor(Math.random() * (200 - 30) + 30),
-        brand: brands[Math.floor(Math.random() * brands.length)],
+        brand: brand,
         size: sizes[Math.floor(Math.random() * sizes.length)],
-        image: `/placeholder.svg?height=200&width=200&text=Product+${i}`
+        image: `${imageUrl}?auto=format&fit=crop&w=400&h=400`
     });
 }
 
+// Rest of the code remains the same
 const itemsPerPage = 12;
 let currentPage = 1;
 let filteredProducts = [...products];
@@ -39,6 +71,8 @@ function renderProducts(productsToRender) {
         productGrid.appendChild(productCard);
     });
 }
+
+
 
 function renderPagination() {
     const paginationContainer = document.getElementById('pagination');
@@ -182,4 +216,3 @@ document.addEventListener('DOMContentLoaded', () => {
         applyFilters();
     });
 });
-
