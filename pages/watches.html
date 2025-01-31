@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlendBazaar - Watches</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: url('../assets/videos/watches.gif') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        header {
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            color: #fff;
+            text-decoration: none;
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Pacifico', cursive;
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        .filters {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 15px;
+            position: sticky;
+            top: 90px;
+            height: fit-content;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .filters:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+
+        .filter-section h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 3px;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .price-range {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .price-range input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .price-range input:focus {
+            border-color: #6a11cb;
+            box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.1);
+        }
+
+        .category-item {
+            padding: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .category-item:hover {
+            background: #f8f9fa;
+            padding-left: 1.2rem;
+        }
+
+        .category-item::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .category-item:hover::before {
+            opacity: 1;
+            left: 0.5rem;
+        }
+
+        .subcategory {
+            padding-left: 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .active .subcategory {
+            max-height: 200px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            transition: all 0.5s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: #2c3e50;
+        }
+
+        .product-price {
+            font-weight: 700;
+            color: #6a11cb;
+            font-size: 1.2rem;
+            margin: 0.8rem 0;
+        }
+
+        .stock-status {
+            font-size: 0.9rem;
+            color: #28a745;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stock-status i {
+            font-size: 0.8rem;
+        }
+
+        .out-of-stock {
+            color: #dc3545;
+        }
+
+        .rating {
+            color: #ffc107;
+            margin: 0.8rem 0;
+            font-size: 1.1rem;
+        }
+
+        .rating span {
+            margin-right: 2px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .rating:hover span {
+            transform: scale(1.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .filter-options label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .filter-options input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #6a11cb;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-options input[type="checkbox"]:checked {
+            background: #6a11cb;
+        }
+
+        .filter-options input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 12px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -468px 0;
+            }
+            100% {
+                background-position: 468px 0;
+            }
+        }
+
+        .loading {
+            background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+            background-size: 800px 104px;
+            animation: shimmer 1.5s infinite linear;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* New styles for improved UI */
+        .filter-section h3 {
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+        }
+
+        .category-item, .filter-options label {
+            font-size: 0.95rem;
+        }
+
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .product-info {
+            flex-grow: 1;
+        }
+
+        .product-actions {
+            margin-top: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(106, 17, 203, 0.2);
+        }
+
+        .btn-secondary {
+            background: #f0f2f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        /* Subtle animations */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .product-card:hover .product-title {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .filter-options label {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+
+        .filter-options label:nth-child(1) { animation-delay: 0.1s; }
+        .filter-options label:nth-child(2) { animation-delay: 0.2s; }
+        .filter-options label:nth-child(3) { animation-delay: 0.3s; }
+        .filter-options label:nth-child(4) { animation-delay: 0.4s; }
+        .filter-options label:nth-child(5) { animation-delay: 0.5s; }
+
+        .error-message {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .error-message p {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="../index.html" class="logo">BlendBazaar</a>
+    </header>
+
+    <div class="container">
+        <aside class="filters">
+            <div class="filter-section">
+                <h3>Categories</h3>
+                <div class="categories">
+                    <div class="category-item active" data-category="watches">
+                        <a href="watches.html">Watches</a>
+                        <div class="subcategory">
+                            <div class="category-item">Smartwatches</div>
+                            <div class="category-item">Luxury Watches</div>
+                            <div class="category-item">Casual Watches</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Price Range</h3>
+                <div class="price-range">
+                    <input type="number" id="min-price" placeholder="Min">
+                    <input type="number" id="max-price" placeholder="Max">
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Brand</h3>
+                <div class="filter-options" id="brand-filters">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Customer Ratings</h3>
+                <div class="filter-options">
+                    <label><input type="checkbox" value="4"> 4★ & above</label>
+                    <label><input type="checkbox" value="3"> 3★ & above</label>
+                    <label><input type="checkbox" value="2"> 2★ & above</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Availability</h3>
+                <div class="filter-options">
+                    <label><input type="checkbox" value="in-stock"> In Stock</label>
+                    <label><input type="checkbox" value="out-of-stock"> Out of Stock</label>
+                </div>
+            </div>
+        </aside>
+
+        <main class="products-grid" id="products-container">
+            <!-- Products will be dynamically populated here -->
+        </main>
+    </div>
+
+    <script>
+        let products = [];
+
+        function showLoading() {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+            for(let i = 0; i < 6; i++) {
+                container.innerHTML += `
+                    <div class="product-card loading">
+                        <div class="product-image"></div>
+                        <div class="product-title"></div>
+                        <div class="rating"></div>
+                        <div class="product-price"></div>
+                    </div>
+                `;
+            }
+        }
+
+        function renderProducts(filteredProducts = products) {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+
+            filteredProducts.forEach((product, index) => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.style.animationDelay = `${index * 0.1}s`;
+                productCard.innerHTML = `
+                    <img src="${product.Images[0]}" alt="${product.Name}" class="product-image">
+                    <h3 class="product-title">${product.Name}</h3>
+                    <div class="rating">
+                        ${Array(5).fill('').map((_, i) => 
+                            `<span>${i < Math.floor(product.Rating) ? '★' : '☆'}</span>`
+                        ).join('')}
+                    </div>
+                    <div class="product-price">$${product.Price.toFixed(2)}</div>
+                    <div class="stock-status ${product.InStock ? '' : 'out-of-stock'}">
+                        <i class="fas ${product.InStock ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                        ${product.InStock ? 'In Stock' : 'Out of Stock'}
+                    </div>
+                    <p class="product-description">${product.Description}</p>
+                    <a href="product-detail.html?id=${product.ProductID}&category=watches" class="btn btn-primary">View Details</a>
+                `;
+                container.appendChild(productCard);
+            });
+        }
+
+        async function fetchProducts() {
+            showLoading();
+            try {
+                const response = await fetch('http://localhost:5000/api/products/watches');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                products = await response.json();
+                renderProducts();
+                populateBrandFilters();
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                document.getElementById('products-container').innerHTML = `
+                    <div class="error-message">
+                        <p>Error loading products. ${error.message}</p>
+                        <button onclick="fetchProducts()" class="btn btn-primary">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        function filterProducts() {
+            const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
+            const selectedRatings = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                .map(checkbox => parseFloat(checkbox.value))
+                .filter(value => !isNaN(value));
+            const selectedBrands = Array.from(document.querySelectorAll('#brand-filters input:checked'))
+                .map(checkbox => checkbox.value);
+            
+            const filteredProducts = products.filter(product => {
+                const priceMatch = product.Price >= minPrice && product.Price <= maxPrice;
+                const ratingMatch = selectedRatings.length === 0 || selectedRatings.some(rating => product.Rating >= rating);
+                const brandMatch = selectedBrands.length === 0 || selectedBrands.includes(product.Brand);
+                return priceMatch && ratingMatch && brandMatch;
+            });
+
+            renderProducts(filteredProducts);
+        }
+
+        function populateBrandFilters() {
+            const uniqueBrands = [...new Set(products.map(product => product.Brand))];
+            const brandFilters = document.getElementById('brand-filters');
+            brandFilters.innerHTML = '';
+            uniqueBrands.forEach(brand => {
+                const label = document.createElement('label');
+                label.innerHTML = `<input type="checkbox" value="${brand}"> ${brand}`;
+                brandFilters.appendChild(label);
+            });
+            
+            brandFilters.querySelectorAll('input').forEach(input => {
+                input.addEventListener('change', filterProducts);
+            });
+        }
+
+        document.querySelectorAll('.category-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('change', filterProducts);
+        });
+
+        fetchProducts();
+    </script>
+</body>
+</html>
+

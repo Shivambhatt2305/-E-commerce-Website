@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - BlendBazaar</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .profile-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .profile-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-content {
+            margin-bottom: 2rem;
+        }
+
+        .profile-details {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-details p {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-details label {
+            font-weight: 600;
+            width: 120px;
+            color: #4a5568;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #4a5568;
+            font-style: italic;
+        }
+
+        .error-message {
+            background-color: #fff5f5;
+            border: 1px solid #fc8181;
+            color: #c53030;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 1rem;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .retry-button {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .retry-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .retry-button:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>User Profile</h1>
+        </div>
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="profile-content" class="profile-content"></div>
+        <div id="loading" class="loading">Loading your profile...</div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!isLoggedIn()) {
+                window.location.href = '../index.html';
+                return;
+            }
+
+            loadUserProfile();
+        });
+
+        async function loadUserProfile() {
+            const loadingElement = document.getElementById('loading');
+            const errorElement = document.getElementById('error-message');
+            const profileContent = document.getElementById('profile-content');
+
+            try {
+                loadingElement.style.display = 'block';
+                errorElement.style.display = 'none';
+                profileContent.innerHTML = '';
+
+                const userData = await fetchUserProfile();
+                
+                profileContent.innerHTML = `
+                    <div class="profile-details">
+                        <p>
+                            <label>Full Name:</label>
+                            <span>${userData.full_name}</span>
+                        </p>
+                        <p>
+                            <label>Email:</label>
+                            <span>${userData.email}</span>
+                        </p>
+                        <p>
+                            <label>Member Since:</label>
+                            <span>${new Date(userData.created_at).toLocaleDateString()}</span>
+                        </p>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                errorElement.innerHTML = `
+                    ${error.message}
+                    <button onclick="loadUserProfile()" class="retry-button">
+                        Try Again
+                    </button>
+                `;
+                errorElement.style.display = 'block';
+            } finally {
+                loadingElement.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - BlendBazaar</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dashboard-container {
+            max-width: 800px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: colorChange 5s infinite alternate;
+        }
+
+        @keyframes colorChange {
+            0% {
+                filter: hue-rotate(0deg);
+            }
+            100% {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        .dashboard-content {
+            margin-bottom: 2rem;
+        }
+
+        .user-profile {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .user-profile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .user-profile h2 {
+            color: #4a5568;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .user-profile p {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+
+        .user-profile label {
+            font-weight: 600;
+            width: 140px;
+            color: #4a5568;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #4a5568;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+
+        .error-message {
+            background-color: #fff5f5;
+            border: 1px solid #fc8181;
+            color: #c53030;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 1rem;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .retry-button, .logout-button, .home-button {
+            display: inline-block;
+            width: calc(50% - 0.5rem);
+            padding: 0.75rem;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .retry-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .logout-button {
+            background: #e53e3e;
+        }
+
+        .home-button {
+            background: #38a169;
+            margin-right: 1rem;
+        }
+
+        .retry-button:hover, .logout-button:hover, .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .retry-button:active, .logout-button:active, .home-button:active {
+            transform: translateY(0);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Welcome to Your Dashboard</h1>
+        </div>
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="dashboard-content" class="dashboard-content">
+            <div id="user-profile" class="user-profile" style="display: none;">
+                <h2>Your Profile</h2>
+                <p><label>Full Name:</label> <span id="user-fullname"></span></p>
+                <p><label>Email:</label> <span id="user-email"></span></p>
+                <p><label>Member Since:</label> <span id="user-created-at"></span></p>
+            </div>
+        </div>
+        <div id="loading" class="loading">Loading your dashboard...</div>
+        <div class="button-container">
+            <a href="../index.html" class="home-button">Go to Home</a>
+            <button id="logout-button" class="logout-button">Logout</button>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!isLoggedIn()) {
+                window.location.href = '../index.html';
+                return;
+            }
+
+            loadDashboard();
+
+            document.getElementById('logout-button').addEventListener('click', function() {
+                logout();
+                window.location.href = '../index.html';
+            });
+        });
+
+        async function loadDashboard() {
+            const loadingElement = document.getElementById('loading');
+            const errorElement = document.getElementById('error-message');
+            const userProfileElement = document.getElementById('user-profile');
+
+            try {
+                loadingElement.style.display = 'block';
+                errorElement.style.display = 'none';
+                userProfileElement.style.display = 'none';
+
+                const userData = await fetchUserProfile();
+                
+                document.getElementById('user-fullname').textContent = userData.full_name;
+                document.getElementById('user-email').textContent = userData.email;
+                document.getElementById('user-created-at').textContent = new Date(userData.created_at).toLocaleDateString();
+
+                userProfileElement.style.display = 'block';
+                userProfileElement.style.animation = 'fadeInUp 0.6s ease-out';
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                errorElement.innerHTML = `
+                    Failed to load user profile. Please try again later.
+                    <button onclick="loadDashboard()" class="retry-button">
+                        Try Again
+                    </button>
+                `;
+                errorElement.style.display = 'block';
+            } finally {
+                loadingElement.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
