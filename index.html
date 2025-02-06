@@ -748,23 +748,15 @@
         <div class="header-content">
             <a href="#" class="logo">BlendBazaar</a>
             <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search for products...">
-                <button id="searchButton">🔍</button>
+                <input type="text" placeholder="Search for products...">
+                <button>🔍</button>
             </div>
             <div class="header-actions">
-                <div id="auth-buttons">
-                    <a href="./pages/login.html" class="account-link" id="loginLink">
-                        <span>Login</span>
-                    </a>
-                    <a href="./pages/signup.html" class="account-link">
-                        <span>Sign Up</span>
-                    </a>
-                </div>
-                <a href="./pages/dashboard.html" id="dashboard-button" class="account-link" style="display: none;">
-                    <span>Dashboard</span>
+                <a href="./pages/login.html" class="account-link">
+                    <span>Login</span>
                 </a>
-                <a href="#" id="logout-button" class="account-link" style="display: none;">
-                    <span>Logout</span>
+                <a href="./pages/signup.html" class="account-link">
+                    <span>Sign Up</span>
                 </a>
                 <a href="./pages/cart.html" class="cart-link">
                     <span>Cart</span>
@@ -773,9 +765,11 @@
                 <a href="./pages/map.html" class="Track-your-order">
                     <span>Track your order</span>
                 </a>
-                <a href="./pages/chatbot.html" class="complaint-link">
+                
+                <a href="./pages/chat.html" class="complaint-link">
                     <span>Help</span>
                 </a>
+                
             </div>
         </div>
     </header>
@@ -787,7 +781,7 @@
         
         <div class="hero-content">
             <div class="hero-buttons">
-                <a href="./pages/clothing.html" class="btn btn-primary">Start Shopping</a>
+                <a href="./pages/product-listing.html" class="btn btn-primary">Start Shopping</a>
                 <a href="#" class="btn btn-secondary">View Deals</a>
             </div>
         </div>
@@ -923,7 +917,8 @@
                 <h3>Contact Us</h3>
                 <form class="contact-form" id="contactForm">
                     <input type="text" name="name" id="name" placeholder="Your Name" required>
-                    <textarea name="issue" id="issue" placeholder="Describe your issue" rows="4" required></textarea>                    <button type="button" id="sendEmail">Send</button>
+                    <textarea name="issue" id="issue" placeholder="Describe your issue" rows="4" required></textarea>
+                    <button type="button" id="sendEmail">Send</button>
                 </form>
             </div>
             <div class="footer-section">
@@ -942,7 +937,7 @@
                         <i class="fab fa-linkedin"></i>
                     </a>
                     <!-- Email Icon -->
-                    <a href="/cdn-cgi/l/email-protection#7b140c151e093b1e031a160b171e55181416">
+                    <a href="mailto:owner@example.com">
                         <i class="fas fa-envelope"></i>
                     </a>
                 </div>
@@ -950,8 +945,7 @@
         </div>
     </footer>
     
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="./js/auth.js"></script>
-<script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Animate buttons on scroll
             const categoryButtons = document.querySelectorAll('.category-buttons');
@@ -1018,67 +1012,11 @@
         }
 
         const subject = encodeURIComponent(`Issue from ${name}`);
-        const body = encodeURIComponent(`Name: ${name}\n\nIssue:\n${issue}`);
-        const email = "shisa3023@gmail.com";
+const body = encodeURIComponent(`Name: ${name}\n\nIssue:\n${issue}`);
+const email = "shisa3023@gmail.com";
 
-        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
     });
-
-    function isLoggedIn() {
-      const token = localStorage.getItem("accessToken");
-      return token !== null;
-    }
-
-    async function updateAuthButtons() {
-      const authButtons = document.getElementById('auth-buttons');
-      const dashboardButton = document.getElementById('dashboard-button');
-      const logoutButton = document.getElementById('logout-button');
-
-      if (isLoggedIn()) {
-        authButtons.style.display = 'none';
-        dashboardButton.style.display = 'inline-block';
-        logoutButton.style.display = 'inline-block';
-      } else {
-        authButtons.style.display = 'block';
-        dashboardButton.style.display = 'none';
-        logoutButton.style.display = 'none';
-      }
-    }
-
-    function logout() {
-        localStorage.removeItem("accessToken");
-        updateAuthButtons();
-    }
-
-    document.addEventListener('DOMContentLoaded', async function() {
-        await updateAuthButtons();
-
-        document.getElementById('logout-button').addEventListener('click', function(e) {
-            e.preventDefault();
-            logout();
-        });
-    });
-    // Search functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const searchButton = document.getElementById('searchButton');
-
-    function performSearch() {
-        const searchTerm = searchInput.value.trim().toLowerCase();
-        if (searchTerm) {
-            // Redirect to the product listing page with the search term as a query parameter
-            window.location.href = `./pages/product-listing.html?search=${encodeURIComponent(searchTerm)}`;
-        }
-    }
-
-    searchButton.addEventListener('click', performSearch);
-
-    searchInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            performSearch();
-        }
-    });
-});
-</script>
+    </script>
 </body>
 </html>
